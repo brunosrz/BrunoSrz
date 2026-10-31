@@ -1,0 +1,20 @@
+language: pt-BR
+
+reviews:
+  profile: assertive
+  request_changes_workflow: true
+  high_level_summary: true
+  review_status: true
+  auto_review:
+    enabled: true
+    drafts: false
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 0
+  path_instructions:
+    - path: "**"
+      instructions: |
+        Revise o portfólio como produto pessoal e confira acessibilidade, responsividade mobile/tablet/desktop, segurança, tipagem, testes e coerência das afirmações sobre os projetos. Evite instruções específicas de monorepos ou serviços que não existam neste repositório.
+
+chat:
+  auto_reply: true
+  art: false
