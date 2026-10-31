@@ -4,7 +4,7 @@ Este repositório contém o portfólio pessoal de **brunosrz**. Siga estas instr
 
 ## Escopo do projeto
 
-O produto é um site pessoal de portfólio, não um site de empresa. O conteúdo deve demonstrar autoridade técnica por meio de experiência e evidências concretas. Os projetos incluem Vectora, Ability System e Delivery Express (`vectora.chat`). Os futuros sites de Ability System e Delivery Express terão subdomínios próprios; serão construídos depois. Não afirme que já existem ou estão publicados.
+O produto é um site pessoal de portfólio, não um site de empresa. O conteúdo deve demonstrar autoridade técnica por meio de experiência e evidências concretas. Os projetos incluem Vectora (site do produto em `vectora.chat`), Ability System e Delivery Express. Os futuros sites de Ability System e Delivery Express terão subdomínios próprios; serão construídos depois. Não afirme que já existem ou estão publicados.
 
 A stack prevista é TanStack Start, Vite, Tailwind CSS, Paraglide e Motion; confira a configuração presente antes de assumir que uma etapa já foi concluída.
 

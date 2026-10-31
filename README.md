@@ -4,7 +4,7 @@ Portfólio pessoal de **brunosrz**, engenheiro de software autodidata com atuaç
 
 ## Projetos e stack
 
-O portfólio apresentará Vectora, Ability System e Delivery Express (`vectora.chat`) com descrições baseadas no trabalho e no estágio real de cada projeto. Ability System e Delivery Express terão subdomínios próprios em etapas futuras; os respectivos sites ainda serão desenvolvidos. Este repositório é a presença profissional pessoal de brunosrz, não um site de empresa.
+O portfólio apresentará Vectora, Ability System e Delivery Express com descrições baseadas no trabalho e no estágio real de cada projeto. [Vectora](https://vectora.chat/features) é uma plataforma de engenharia de software com agentes de IA, contexto de código, ferramentas de desenvolvimento e infraestrutura própria. A página de funcionalidades documenta, entre outros recursos, o motor de conversa nativo, subagentes e kanban multiagente, Context Graph, RAG híbrido, terminal e Git integrados, navegador compartilhado e sandbox multiplataforma. Ability System e Delivery Express terão subdomínios próprios em etapas futuras; esses sites ainda serão desenvolvidos. Este repositório é a presença profissional pessoal de brunosrz, não um site de empresa.
 
 A aplicação será baseada em TanStack Start e Vite, com Tailwind CSS para estilos, Paraglide para internacionalização e Motion para animações. A configuração da aplicação entra na segunda etapa; esta primeira etapa prepara os comandos e a automação do repositório.
 

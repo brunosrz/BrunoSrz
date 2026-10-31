@@ -13,8 +13,11 @@ Use títulos e commits Conventional Commits, por exemplo `feat: add accessible p
 Instale e execute os hooks locais:
 
 ```sh
+pnpm install
 pre-commit install
 pre-commit run --all-files
 ```
+
+Use pre-commit 3.2.0 ou superior. O hook de formatação chama o Prettier instalado pelo projeto para manter a versão sincronizada com as dependências.
 
 Execute também `scons lint`, `scons tests` e `scons build` quando a etapa já tiver esses scripts configurados. Não inclua `.env`, tokens, arquivos de build ou mudanças sem relação com a issue.
