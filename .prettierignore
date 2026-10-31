@@ -1,7 +1,15 @@
 node_modules/
-.pnpm-store/
 .output/
 dist/
 build/
 coverage/
-pnpm-lock.yaml
+playwright-report/
+test-results/
+bun.lock
+.tanstack-scaffold-seed/
+project.inlang/.meta.json
+project.inlang/README.md
+project.inlang/.lix/
+project.inlang/cache/
+src/routeTree.gen.ts
+src/paraglide/

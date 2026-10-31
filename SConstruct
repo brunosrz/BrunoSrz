@@ -1,6 +1,8 @@
 """SCons task entry point for the portfolio repository."""
 
+import asyncio
 import os
+import shlex
 import subprocess
 import sys
 
@@ -17,31 +19,36 @@ AddOption(
 ROOT = Dir(".").abspath
 
 
-def _run_pnpm(arguments: list[str]) -> int:
-    """Run a pnpm task, using the Windows command processor for .cmd shims."""
-    command = ["pnpm", *arguments]
+async def _run_bun(arguments: list[str]) -> int:
+    """Run a Bun task asynchronously and return its exit status."""
+    command = ["bun", *arguments]
     if sys.platform == "win32":
-        command = [
-            os.environ.get("COMSPEC", "cmd.exe"),
-            "/d",
-            "/s",
-            "/c",
-            subprocess.list2cmdline(command),
-        ]
-    return subprocess.run(command, cwd=ROOT, check=False).returncode
+        command_line = subprocess.list2cmdline(command)
+        process = await asyncio.create_subprocess_shell(
+            command_line,
+            cwd=ROOT,
+            executable=os.environ.get("COMSPEC", "cmd.exe"),
+        )
+    else:
+        process = await asyncio.create_subprocess_shell(
+            shlex.join(command),
+            cwd=ROOT,
+        )
+    return await process.wait()
 
 
-def _task(arguments: list[str]):
-    """Create an SCons action for a fixed pnpm command."""
+def _task(arguments: list[str]) -> Action:
+    """Create an SCons action for a fixed Bun command."""
 
-    def run(target, source, env):
-        return _run_pnpm(arguments)
+    def run(target: object, source: object, env: object) -> int:
+        return asyncio.run(_run_bun(arguments))
 
     return Action(run)
 
 
 env = Environment()
 env.AlwaysBuild(env.Alias("lint", action=_task(["run", "lint"])))
+env.AlwaysBuild(env.Alias("typecheck", action=_task(["run", "typecheck"])))
 env.AlwaysBuild(env.Alias("tests", action=_task(["run", "test"])))
 env.AlwaysBuild(env.Alias("build", action=_task(["run", "build"])))
 env.AlwaysBuild(env.Alias("deploy", action=_task(["run", "deploy"])))

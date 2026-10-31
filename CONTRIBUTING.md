@@ -13,7 +13,7 @@ Use títulos e commits Conventional Commits, por exemplo `feat: add accessible p
 Instale e execute os hooks locais:
 
 ```sh
-pnpm install
+bun install
 pre-commit install
 pre-commit run --all-files
 ```
