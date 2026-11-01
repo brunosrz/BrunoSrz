@@ -43,12 +43,22 @@ scons lint
 scons typecheck
 scons tests
 scons build
-scons deploy
+scons deploy              # preview
+scons deploy --prod       # produção; prod é uma opção, não um target
 scons update
 scons update --latest
 ```
 
-`update` respeita os intervalos de versão do `package.json`; `update --latest` também pode atualizar versões principais. Revise changelogs e incompatibilidades antes de integrar essas atualizações. Deploy só ficará disponível quando a configuração da plataforma de hospedagem for definida.
+`update` respeita os intervalos de versão do `package.json`; `update --latest` também pode atualizar versões principais. Revise changelogs e incompatibilidades antes de integrar essas atualizações. O deploy exige uma conta Vercel e o vínculo deste repositório a um projeto.
+
+Para publicar no Vercel, autentique o CLI e vincule o diretório ao projeto uma vez:
+
+```sh
+bunx vercel@65.9.0 login
+bunx vercel@65.9.0 link
+```
+
+Depois, `scons deploy` cria um preview e `scons deploy --prod` solicita um deploy de produção. O segundo comando publica no domínio de produção configurado no projeto Vercel. `prod` é uma opção, não um target SCons; use `--prod`, não `scons deploy prod`. Verifique o URL e os logs de build retornados pelo CLI após cada deploy.
 
 Instale os hooks locais e execute as verificações antes de abrir um pull request:
 
@@ -57,7 +67,7 @@ pre-commit install
 pre-commit run --all-files
 ```
 
-A CI executa os hooks, lint, tipagem, testes e build em Linux e Windows. Ela não publica o site automaticamente.
+A CI executa os hooks, lint, tipagem, testes e build em Linux e Windows. Ela não publica o site automaticamente; deploys são iniciados manualmente pelo CLI.
 
 ## Contribuição
 
