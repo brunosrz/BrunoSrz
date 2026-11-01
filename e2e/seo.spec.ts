@@ -5,13 +5,13 @@ const localizedPages = [
     locale: "en",
     path: "/en/",
     title: /Software Engineer/,
-    socialImage: "https://brunosrz.vercel.app/social-card-en.png",
+    socialImage: "https://www.brunosrz.com/social-card-en.png",
   },
   {
     locale: "pt-BR",
     path: "/pt-BR/",
     title: /Engenheiro de Software/,
-    socialImage: "https://brunosrz.vercel.app/social-card-pt-BR.png",
+    socialImage: "https://www.brunosrz.com/social-card-pt-BR.png",
   },
 ] as const;
 
@@ -31,7 +31,7 @@ for (const pageSeo of localizedPages) {
       /<link\b(?=[^>]*\brel="canonical")[^>]*>/i,
     )?.[0];
     expect(canonicalTag).toContain(
-      `href="https://brunosrz.vercel.app${pageSeo.path}"`,
+      `href="https://www.brunosrz.com${pageSeo.path}"`,
     );
 
     for (const [locale, path] of [
@@ -41,9 +41,7 @@ for (const pageSeo of localizedPages) {
       const alternateTag = initialHtml.match(
         new RegExp(`<link\\b(?=[^>]*\\bhreflang="${locale}")[^>]*>`, "i"),
       )?.[0];
-      expect(alternateTag).toContain(
-        `href="https://brunosrz.vercel.app${path}"`,
-      );
+      expect(alternateTag).toContain(`href="https://www.brunosrz.com${path}"`);
     }
 
     const socialImageTag = initialHtml.match(
@@ -72,15 +70,15 @@ for (const pageSeo of localizedPages) {
     );
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
-      `https://brunosrz.vercel.app${pageSeo.path}`,
+      `https://www.brunosrz.com${pageSeo.path}`,
     );
     await expect(page.locator('link[hreflang="en"]')).toHaveAttribute(
       "href",
-      "https://brunosrz.vercel.app/en/",
+      "https://www.brunosrz.com/en/",
     );
     await expect(page.locator('link[hreflang="pt-BR"]')).toHaveAttribute(
       "href",
-      "https://brunosrz.vercel.app/pt-BR/",
+      "https://www.brunosrz.com/pt-BR/",
     );
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       "content",

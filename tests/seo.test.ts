@@ -5,6 +5,11 @@ const rootRoute = await readFile("src/routes/__root.tsx", "utf8");
 const faviconSvg = await readFile("public/favicon.svg", "utf8");
 const robots = await readFile("public/robots.txt", "utf8");
 const sitemap = await readFile("public/sitemap.xml", "utf8");
+const socialCards = await Promise.all(
+  ["en", "pt-BR"].map((locale) =>
+    readFile(`public/social-card-${locale}.svg`, "utf8"),
+  ),
+);
 const manifests = (await Promise.all(
   ["en", "pt-BR"].map(async (locale) =>
     JSON.parse(await readFile(`public/site-${locale}.webmanifest`, "utf8")),
@@ -26,6 +31,8 @@ describe("portfolio SEO assets", () => {
   it("serves localized search and social metadata from the root route", () => {
     expect(rootRoute).toContain("m.meta_title()");
     expect(rootRoute).toContain("m.meta_description()");
+    expect(rootRoute).toContain('const siteUrl = "https://www.brunosrz.com"');
+    expect(rootRoute).not.toContain("brunosrz.vercel.app");
     expect(rootRoute).toContain('"/pt-BR/" : "/en/"');
     expect(rootRoute).toContain('hrefLang: "pt-BR"');
     expect(rootRoute).toContain('hrefLang: "x-default"');
@@ -38,10 +45,19 @@ describe("portfolio SEO assets", () => {
 
   it("publishes a crawlable sitemap and robots policy for both locales", () => {
     expect(robots).toContain("Allow: /");
-    expect(robots).toContain("https://brunosrz.vercel.app/sitemap.xml");
-    expect(sitemap).toContain("https://brunosrz.vercel.app/en/");
-    expect(sitemap).toContain("https://brunosrz.vercel.app/pt-BR/");
+    expect(robots).toContain("https://www.brunosrz.com/sitemap.xml");
+    expect(sitemap).toContain("https://www.brunosrz.com/en/");
+    expect(sitemap).toContain("https://www.brunosrz.com/pt-BR/");
+    expect(robots).not.toContain("brunosrz.vercel.app");
+    expect(sitemap).not.toContain("brunosrz.vercel.app");
     expect(sitemap).toContain('hreflang="x-default"');
+  });
+
+  it("uses the official domain in both social card sources", () => {
+    for (const socialCard of socialCards) {
+      expect(socialCard).toContain("brunosrz.com");
+      expect(socialCard).not.toContain("brunosrz.vercel.app");
+    }
   });
 
   it("ships square favicon variants and correctly sized social cards", async () => {
