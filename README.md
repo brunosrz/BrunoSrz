@@ -73,6 +73,14 @@ pre-commit install
 pre-commit run --all-files
 ```
 
+Os testes de ponta a ponta usam Chromium e o build Nitro de produção para verificar o HTML renderizado. Gere o build e instale o browser uma vez antes de executá-los localmente:
+
+```sh
+bunx playwright install chromium
+bun run build
+bun run test:e2e
+```
+
 A CI executa os hooks, lint, tipagem, testes e build em Linux e Windows. Ela não publica o site automaticamente; deploys são iniciados manualmente pelo CLI.
 
 ## Contribuição

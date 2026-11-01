@@ -5,11 +5,15 @@ const rootRoute = await readFile("src/routes/__root.tsx", "utf8");
 const faviconSvg = await readFile("public/favicon.svg", "utf8");
 const robots = await readFile("public/robots.txt", "utf8");
 const sitemap = await readFile("public/sitemap.xml", "utf8");
-const manifest = JSON.parse(
-  await readFile("public/site.webmanifest", "utf8"),
-) as {
+const manifests = (await Promise.all(
+  ["en", "pt-BR"].map(async (locale) =>
+    JSON.parse(await readFile(`public/site-${locale}.webmanifest`, "utf8")),
+  ),
+)) as Array<{
+  lang: string;
+  start_url: string;
   icons: Array<{ sizes: string; src: string }>;
-};
+}>;
 
 function readPngDimensions(png: Buffer): { width: number; height: number } {
   return {
@@ -54,10 +58,16 @@ describe("portfolio SEO assets", () => {
       expect(dimensions).toEqual({ width: size, height: size });
     }
 
-    expect(manifest.icons.map((icon) => icon.sizes)).toEqual([
-      "192x192",
-      "512x512",
+    expect(manifests.map(({ lang, start_url }) => [lang, start_url])).toEqual([
+      ["en", "/en/"],
+      ["pt-BR", "/pt-BR/"],
     ]);
+    for (const manifest of manifests) {
+      expect(manifest.icons.map((icon) => icon.sizes)).toEqual([
+        "192x192",
+        "512x512",
+      ]);
+    }
     expect(
       readPngDimensions(await readFile("public/social-card-en.png")),
     ).toEqual({

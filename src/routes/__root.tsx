@@ -81,7 +81,7 @@ export const Route = createRootRoute({
           sizes: "180x180",
           href: "/apple-touch-icon.png",
         },
-        { rel: "manifest", href: "/site.webmanifest" },
+        { rel: "manifest", href: `/site-${locale}.webmanifest` },
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
         {
           rel: "preconnect",

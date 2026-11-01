@@ -1,7 +1,8 @@
 {
   "name": "Bruno Soares — brunosrz",
   "short_name": "brunosrz",
-  "start_url": "/",
+  "lang": "en",
+  "start_url": "/en/",
   "display": "standalone",
   "background_color": "#111113",
   "theme_color": "#111113",
