@@ -21,8 +21,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "bun run dev --host 127.0.0.1 --port 3000",
+    command: "bun run start",
     url: "http://127.0.0.1:3000",
+    env: { PORT: "3000", HOST: "127.0.0.1" },
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
