@@ -53,7 +53,9 @@ describe("scaffold tooling", () => {
   });
 
   it("installs Bun and reruns the pull request title check after edits", () => {
-    expect(ciWorkflow).toContain("uses: oven-sh/setup-bun@v2");
+    expect(ciWorkflow).toContain(
+      "uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6",
+    );
     expect(ciWorkflow).toContain("run: bun install --frozen-lockfile");
     expect(ciWorkflow).toMatch(
       /pull_request:\s+types: \[opened, synchronize, reopened, edited\]/,

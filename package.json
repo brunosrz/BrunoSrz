@@ -20,7 +20,7 @@
     "format": "prettier --write .",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage --passWithNoTests",
+    "test:coverage": "node scripts/warm-paraglide-wasm.mjs && bun run i18n:compile && bun run generate-routes && vitest run --coverage --passWithNoTests",
     "test:e2e": "node scripts/warm-paraglide-wasm.mjs && playwright test --pass-with-no-tests"
   },
   "dependencies": {
@@ -59,7 +59,8 @@
     "prettier": "3.9.10",
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "@lix-js/sdk": "0.20.1"
   },
   "trustedDependencies": [
     "@tailwindcss/oxide",

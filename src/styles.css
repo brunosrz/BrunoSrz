@@ -24,6 +24,7 @@
   --chip-bg: rgba(255, 255, 255, 0.8);
   --chip-line: rgba(47, 106, 74, 0.18);
   --link-bg-hover: rgba(255, 255, 255, 0.9);
+  --link-hover: #246f76;
   --hero-a: rgba(79, 184, 178, 0.36);
   --hero-b: rgba(47, 106, 74, 0.2);
 }
@@ -46,6 +47,7 @@
   --chip-bg: rgba(13, 28, 32, 0.9);
   --chip-line: rgba(141, 229, 219, 0.24);
   --link-bg-hover: rgba(24, 44, 49, 0.8);
+  --link-hover: #8de5db;
   --hero-a: rgba(96, 215, 207, 0.18);
   --hero-b: rgba(110, 200, 154, 0.12);
 }
@@ -69,6 +71,7 @@
     --chip-bg: rgba(13, 28, 32, 0.9);
     --chip-line: rgba(141, 229, 219, 0.24);
     --link-bg-hover: rgba(24, 44, 49, 0.8);
+    --link-hover: #8de5db;
     --hero-a: rgba(96, 215, 207, 0.18);
     --hero-b: rgba(110, 200, 154, 0.12);
   }
@@ -151,7 +154,7 @@ a {
 }
 
 a:hover {
-  color: #246f76;
+  color: var(--link-hover);
 }
 
 code {
