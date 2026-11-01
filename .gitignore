@@ -25,3 +25,5 @@ Thumbs.db
 __pycache__/
 paraglide
 *.gen.ts
+.vercel
+.env*
