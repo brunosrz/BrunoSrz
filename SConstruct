@@ -101,19 +101,89 @@ def _check_vercel_link() -> bool:
     try:
         with open(link_path, encoding="utf-8") as link_file:
             project_config = json.load(link_file)
-            linked_project = (
-                project_config.get("projectName", "")
+            project_id = (
+                project_config.get("projectId", "")
+                if isinstance(project_config, dict)
+                else ""
+            )
+            org_id = (
+                project_config.get("orgId", "")
                 if isinstance(project_config, dict)
                 else ""
             )
     except (OSError, json.JSONDecodeError):
-        linked_project = ""
+        project_id = ""
+        org_id = ""
 
-    if linked_project != "brunosrz":
+    if not isinstance(project_id, str) or not project_id:
         print(
-            "\n[scons deploy] A raiz está linkada ao projeto Vercel errado.\n"
-            f"  Linkado: '{linked_project or 'desconhecido'}'\n"
-            "  Esperado: 'brunosrz'\n"
+            "\n[scons deploy] O arquivo de vínculo Vercel não contém projectId válido.\n"
+            "  Rode `vercel link` na raiz e selecione o projeto `brunosrz`.\n"
+        )
+        return False
+
+    if not isinstance(org_id, str) or not org_id:
+        print(
+            "\n[scons deploy] O arquivo de vínculo Vercel não contém orgId válido.\n"
+            "  Rode `vercel link` na raiz e selecione o escopo do projeto.\n"
+        )
+        return False
+
+    try:
+        result = subprocess.run(
+            [
+                VERCEL,
+                "project",
+                "ls",
+                "--format=json",
+                "--filter",
+                "brunosrz",
+                "--scope",
+                org_id,
+            ],
+            cwd=ROOT,
+            stdin=subprocess.DEVNULL,
+            capture_output=True,
+            check=False,
+            text=True,
+        )
+    except OSError:
+        print(
+            "\n[scons deploy] Não foi possível consultar o projeto na conta Vercel.\n"
+            "  Confirme a instalação do CLI e a sessão com `vercel whoami`.\n"
+        )
+        return False
+
+    if result.returncode != 0:
+        print(
+            "\n[scons deploy] Não foi possível consultar os projetos no escopo Vercel.\n"
+            "  Confirme as permissões da conta com `vercel whoami`.\n"
+        )
+        return False
+
+    try:
+        project_list = json.loads(result.stdout)
+        projects = (
+            project_list.get("projects", [])
+            if isinstance(project_list, dict)
+            else []
+        )
+        if not isinstance(projects, list):
+            projects = []
+    except json.JSONDecodeError:
+        projects = []
+
+    linked_project = next(
+        (
+            project
+            for project in projects
+            if isinstance(project, dict) and project.get("id") == project_id
+        ),
+        None,
+    )
+    if not linked_project or linked_project.get("name") != "brunosrz":
+        print(
+            "\n[scons deploy] A raiz não está linkada ao projeto Vercel `brunosrz`.\n"
             "  Rode `vercel link` na raiz e selecione o projeto correto.\n"
         )
         return False

@@ -59,7 +59,7 @@ vercel login
 vercel link
 ```
 
-Antes de cada deploy, o SCons confirma a sessão com `vercel whoami` e verifica se `.vercel/project.json` aponta para o projeto `brunosrz`. Depois, `scons deploy` cria um preview e `scons deploy --prod` solicita um deploy de produção. O segundo comando publica no domínio de produção configurado no projeto Vercel. `prod` é uma opção, não um target SCons; use `--prod`, não `scons deploy prod`. Verifique o URL e os logs de build retornados pelo CLI após cada deploy. `bun run deploy` usa o mesmo executável global.
+Antes de cada deploy, o SCons confirma a sessão com `vercel whoami` e verifica se o `projectId` em `.vercel/project.json` corresponde ao projeto `brunosrz` no escopo autenticado. Depois, `scons deploy` cria um preview e `scons deploy --prod` solicita um deploy de produção. O segundo comando publica no domínio de produção configurado no projeto Vercel. `prod` é uma opção, não um target SCons; use `--prod`, não `scons deploy prod`. Verifique o URL e os logs de build retornados pelo CLI após cada deploy. `bun run deploy` também passa pelo SCons e executa os mesmos preflights.
 
 ## SEO e compartilhamento
 
