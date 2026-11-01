@@ -29,18 +29,16 @@ describe("scaffold tooling", () => {
     expect(manifest.devDependencies.prettier).toMatch(/^\d+\.\d+\.\d+$/);
   });
 
-  it("routes project tasks and latest dependency updates through Bun in SCons", () => {
-    for (const task of [
-      "lint",
-      "typecheck",
-      "tests",
-      "build",
-      "deploy",
-      "update",
-    ]) {
+  it("routes quality and update tasks through Bun in SCons", () => {
+    for (const task of ["lint", "typecheck", "tests", "build", "update"]) {
       expect(sconstruct).toContain(`Alias("${task}"`);
     }
-    expect(sconstruct).toContain('command = ["bun", *arguments]');
+    expect(sconstruct).toContain(
+      'return await _run_command(["bun", *arguments])',
+    );
+    expect(sconstruct).toContain(
+      "return await _run_command([VERCEL, *arguments])",
+    );
     expect(sconstruct).toContain('update_arguments.append("--latest")');
   });
 
@@ -48,9 +46,16 @@ describe("scaffold tooling", () => {
     expect(viteConfig).toContain('import { nitro } from "nitro/vite"');
     expect(viteConfig).toContain("nitro(),");
     expect(manifest.devDependencies.nitro).toBe("3.0.261029-rc");
-    expect(manifest.scripts.deploy).toBe("bunx vercel@65.9.0 deploy");
-    expect(sconstruct).toContain('"--prod",');
+    expect(manifest.scripts.deploy).toBe("vercel deploy --yes");
+    expect(sconstruct).toContain('("vercel.cmd", "vercel.exe", "vercel")');
+    expect(sconstruct).toContain('deploy_arguments = ["deploy", "--yes"]');
+    expect(sconstruct).toContain('[VERCEL, "whoami"]');
+    expect(sconstruct).toContain('".vercel", "project.json"');
+    expect(sconstruct).toContain("action=_deploy_task(deploy_arguments)");
     expect(sconstruct).toContain('deploy_arguments.append("--prod")');
+    expect(readme).toContain("vercel whoami");
+    expect(readme).toContain("projeto `brunosrz`");
+    expect(readme).not.toContain("bunx vercel@65.9.0");
     expect(readme).toContain("scons deploy --prod");
     expect(readme).toContain("scons deploy prod");
   });

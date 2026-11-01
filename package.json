@@ -14,7 +14,7 @@
     "generate-routes": "tsr generate",
     "i18n:compile": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide --emit-ts-declarations",
     "build": "node scripts/warm-paraglide-wasm.mjs && vite build",
-    "deploy": "bunx vercel@65.9.0 deploy",
+    "deploy": "vercel deploy --yes",
     "preview": "vite preview",
     "start": "node .output/server/index.mjs",
     "typecheck": "node scripts/warm-paraglide-wasm.mjs && bun run i18n:compile && bun run generate-routes && tsc --noEmit",
