@@ -18,7 +18,51 @@ const localizedPages = [
 for (const pageSeo of localizedPages) {
   test(`serves SSR SEO metadata for ${pageSeo.locale}`, async ({ page }) => {
     const response = await page.goto(pageSeo.path);
-    expect(response?.status()).toBe(200);
+    if (!response) {
+      throw new Error(`No document response for ${pageSeo.path}`);
+    }
+    expect(response.status()).toBe(200);
+
+    const initialHtml = await response.text();
+    const htmlTag = initialHtml.match(/<html\b[^>]*>/i)?.[0] ?? "";
+    expect(htmlTag).toMatch(new RegExp(`\\blang="${pageSeo.locale}"`));
+
+    const canonicalTag = initialHtml.match(
+      /<link\b(?=[^>]*\brel="canonical")[^>]*>/i,
+    )?.[0];
+    expect(canonicalTag).toContain(
+      `href="https://brunosrz.vercel.app${pageSeo.path}"`,
+    );
+
+    for (const [locale, path] of [
+      ["en", "/en/"],
+      ["pt-BR", "/pt-BR/"],
+    ] as const) {
+      const alternateTag = initialHtml.match(
+        new RegExp(`<link\\b(?=[^>]*\\bhreflang="${locale}")[^>]*>`, "i"),
+      )?.[0];
+      expect(alternateTag).toContain(
+        `href="https://brunosrz.vercel.app${path}"`,
+      );
+    }
+
+    const socialImageTag = initialHtml.match(
+      /<meta\b(?=[^>]*\bproperty="og:image")[^>]*>/i,
+    )?.[0];
+    expect(socialImageTag).toContain(`content="${pageSeo.socialImage}"`);
+
+    const jsonLd = initialHtml.match(
+      /<script\b(?=[^>]*\btype="application\/ld\+json")[^>]*>([\s\S]*?)<\/script>/i,
+    )?.[1];
+    expect(jsonLd).toBeDefined();
+    expect(JSON.parse(jsonLd ?? "{}")).toMatchObject({
+      "@type": "ProfilePage",
+      inLanguage: pageSeo.locale,
+      mainEntity: {
+        "@type": "Person",
+        name: "Bruno Soares",
+      },
+    });
 
     await expect(page.locator("html")).toHaveAttribute("lang", pageSeo.locale);
     await expect(page).toHaveTitle(pageSeo.title);
