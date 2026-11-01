@@ -5,13 +5,14 @@ const sconstruct = await readFile("SConstruct", "utf8");
 const preCommitConfig = await readFile(".pre-commit-config.yaml", "utf8");
 const ciWorkflow = await readFile(".github/workflows/ci.yml", "utf8");
 const readme = await readFile("README.md", "utf8");
+const viteConfig = await readFile("vite.config.ts", "utf8");
 
 interface PackageManifest {
   name: string;
   private: boolean;
   packageManager: string;
-  scripts: { lint: string; test: string };
-  devDependencies: { prettier: string };
+  scripts: { deploy: string; lint: string; test: string };
+  devDependencies: { nitro: string; prettier: string };
 }
 
 const manifest: PackageManifest = JSON.parse(
@@ -41,6 +42,17 @@ describe("scaffold tooling", () => {
     }
     expect(sconstruct).toContain('command = ["bun", *arguments]');
     expect(sconstruct).toContain('update_arguments.append("--latest")');
+  });
+
+  it("configures Nitro and Vercel deploy commands through SCons", () => {
+    expect(viteConfig).toContain('import { nitro } from "nitro/vite"');
+    expect(viteConfig).toContain("nitro(),");
+    expect(manifest.devDependencies.nitro).toBe("3.0.261029-rc");
+    expect(manifest.scripts.deploy).toBe("bunx vercel@65.9.0 deploy");
+    expect(sconstruct).toContain('"--prod",');
+    expect(sconstruct).toContain('deploy_arguments.append("--prod")');
+    expect(readme).toContain("scons deploy --prod");
+    expect(readme).toContain("scons deploy prod");
   });
 
   it("runs formatting and translation ordering hooks with the project config", () => {

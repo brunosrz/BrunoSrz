@@ -15,6 +15,13 @@ AddOption(
     default=False,
     help="With update, allow dependency updates across declared version ranges.",
 )
+AddOption(
+    "--prod",
+    dest="prod",
+    action="store_true",
+    default=False,
+    help="Deploy to the linked Vercel project's production environment.",
+)
 
 ROOT = Dir(".").abspath
 
@@ -51,7 +58,10 @@ env.AlwaysBuild(env.Alias("lint", action=_task(["run", "lint"])))
 env.AlwaysBuild(env.Alias("typecheck", action=_task(["run", "typecheck"])))
 env.AlwaysBuild(env.Alias("tests", action=_task(["run", "test"])))
 env.AlwaysBuild(env.Alias("build", action=_task(["run", "build"])))
-env.AlwaysBuild(env.Alias("deploy", action=_task(["run", "deploy"])))
+deploy_arguments = ["run", "deploy"]
+if GetOption("prod"):
+    deploy_arguments.append("--prod")
+env.AlwaysBuild(env.Alias("deploy", action=_task(deploy_arguments)))
 
 update_arguments = ["update"]
 if GetOption("latest"):
