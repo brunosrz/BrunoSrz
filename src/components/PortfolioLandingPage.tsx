@@ -148,7 +148,7 @@ export default function PortfolioLandingPage() {
         </a>
       </section>
 
-      <section className="proof-strip section-wrap" aria-label="Highlights">
+      <section className="proof-strip section-wrap" aria-label={m.proof_aria()}>
         <div className="proof-item">
           <span className="proof-value">{m.proof_since()}</span>
           <span>{m.proof_since_desc()}</span>
@@ -197,6 +197,7 @@ export default function PortfolioLandingPage() {
                 rel="noreferrer"
               >
                 {m.vectora_site()}
+                <span className="sr-only"> {m.opens_new_tab()}</span>
                 <ArrowUpRight size={16} aria-hidden="true" />
               </a>
               <a
@@ -206,6 +207,7 @@ export default function PortfolioLandingPage() {
                 rel="noreferrer"
               >
                 {m.vectora_repo()}
+                <span className="sr-only"> {m.opens_new_tab()}</span>
               </a>
             </div>
           </div>
@@ -288,6 +290,7 @@ export default function PortfolioLandingPage() {
                 <div className="project-actions project-actions-bottom">
                   <a href={project.repo} target="_blank" rel="noreferrer">
                     {project.repoLabel()}
+                    <span className="sr-only"> {m.opens_new_tab()}</span>
                     <ArrowUpRight size={16} aria-hidden="true" />
                   </a>
                   {project.futureSiteUrl ? (
@@ -299,6 +302,7 @@ export default function PortfolioLandingPage() {
                     >
                       <Globe2 size={14} aria-hidden="true" />
                       {m.future_site_link()}
+                      <span className="sr-only"> {m.opens_new_tab()}</span>
                     </a>
                   ) : (
                     <span className="future-site">
@@ -387,6 +391,7 @@ export default function PortfolioLandingPage() {
             >
               <GitBranch size={17} aria-hidden="true" />
               {m.contact_github()}
+              <span className="sr-only"> {m.opens_new_tab()}</span>
             </a>
           </div>
         </Reveal>

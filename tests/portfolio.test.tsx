@@ -5,10 +5,18 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import * as m from "../src/paraglide/messages.js";
 import PortfolioLandingPage from "../src/components/PortfolioLandingPage";
 import Header from "../src/components/Header";
+import { secureSiteUrl } from "../src/data/project-sites";
+
+const { setLocaleMock } = vi.hoisted(() => ({ setLocaleMock: vi.fn() }));
+
+vi.mock("../src/paraglide/runtime.js", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../src/paraglide/runtime.js")>()),
+  setLocale: setLocaleMock,
+}));
 
 afterEach(cleanup);
 
@@ -34,17 +42,17 @@ describe("portfolio landing page", () => {
   });
 
   it("links Vectora to its own features and keeps future sites clearly unavailable", () => {
-    render(<PortfolioLandingPage />);
+    const { container } = render(<PortfolioLandingPage />);
 
     expect(
-      screen.getByRole("link", { name: m.vectora_site() }),
+      screen.getByRole("link", { name: /Explore Vectora features/ }),
     ).toHaveAttribute("href", "https://vectora.chat/features");
-    const abilityRepo = screen
-      .getAllByRole("link", { name: m.ability_repo() })
-      .find((link) => link.getAttribute("href")?.endsWith("/AbilitySystem"));
-    const deliveryRepo = screen
-      .getAllByRole("link", { name: m.delivery_repo() })
-      .find((link) => link.getAttribute("href")?.endsWith("/Delivery"));
+    const abilityRepo = container.querySelector(
+      'a[href="https://github.com/brunosrz/AbilitySystem"]',
+    );
+    const deliveryRepo = container.querySelector(
+      'a[href="https://github.com/brunosrz/Delivery"]',
+    );
     expect(abilityRepo).toHaveAttribute(
       "href",
       "https://github.com/brunosrz/AbilitySystem",
@@ -77,5 +85,53 @@ describe("portfolio landing page", () => {
     expect(
       screen.getByRole("button", { name: m.nav_open_menu() }),
     ).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("closes the mobile navigation on Escape and restores focus", () => {
+    render(<Header />);
+
+    const toggle = screen.getByRole("button", { name: m.nav_open_menu() });
+    fireEvent.click(toggle);
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle).toHaveFocus();
+  });
+
+  it("announces the locale change and calls Paraglide when toggled", () => {
+    render(<Header />);
+
+    const toggle = screen.getByRole("button", {
+      name: m.language_toggle_aria({
+        current: "English",
+        target: "Português",
+      }),
+    });
+    expect(document.getElementById("language-switch-to")).toHaveAttribute(
+      "lang",
+      "pt-BR",
+    );
+    setLocaleMock.mockClear();
+    fireEvent.click(toggle);
+
+    expect(setLocaleMock).toHaveBeenCalledWith("pt-BR");
+  });
+});
+
+describe("project site URL validation", () => {
+  it.each([
+    undefined,
+    "",
+    "http://example.com",
+    "javascript:alert(1)",
+    "not a url",
+  ])("rejects unsafe or invalid URL %s", (value) => {
+    expect(secureSiteUrl(value)).toBeUndefined();
+  });
+
+  it("accepts an HTTPS URL", () => {
+    expect(secureSiteUrl("https://example.com/path")).toBe(
+      "https://example.com/path",
+    );
   });
 });

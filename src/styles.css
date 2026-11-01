@@ -12,7 +12,7 @@
   --surface-raised: #1d1d20;
   --text: #fafafa;
   --muted: #a1a1aa;
-  --subtle: #71717a;
+  --subtle: #9a9aa3;
   --line: #29292e;
   --blue: #3399ff;
   --blue-soft: rgba(51, 153, 255, 0.12);
@@ -952,8 +952,8 @@ a:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: #777780;
-  font-size: 0.61rem;
+  color: var(--subtle);
+  font-size: 0.75rem;
 }
 
 .expertise-grid {

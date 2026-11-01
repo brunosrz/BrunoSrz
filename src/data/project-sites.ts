@@ -1,4 +1,4 @@
-function secureSiteUrl(value: string | undefined): string | undefined {
+export function secureSiteUrl(value: string | undefined): string | undefined {
   if (!value) return undefined;
 
   try {
