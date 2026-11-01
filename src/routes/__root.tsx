@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import appCss from "../styles.css?url";
 
-const siteUrl = "https://brunosrz.vercel.app";
+const siteUrl = "https://www.brunosrz.com";
 
 export const Route = createRootRoute({
   head: () => {
