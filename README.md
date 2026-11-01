@@ -51,14 +51,15 @@ scons update --latest
 
 `update` respeita os intervalos de versão do `package.json`; `update --latest` também pode atualizar versões principais. Revise changelogs e incompatibilidades antes de integrar essas atualizações. O deploy exige uma conta Vercel e o vínculo deste repositório a um projeto.
 
-Para publicar no Vercel, autentique o CLI e vincule o diretório ao projeto uma vez:
+O deploy pelo SCons usa o CLI global `vercel` encontrado no `PATH`, como no repositório Vectora. No Windows, o SCons também procura os shims `vercel.cmd` e `vercel.exe`. Para publicar, instale globalmente o CLI (por exemplo, `npm install --global vercel`), autentique essa instalação e vincule a raiz do repositório ao projeto uma vez:
 
 ```sh
-bunx vercel@65.9.0 login
-bunx vercel@65.9.0 link
+vercel --version
+vercel login
+vercel link
 ```
 
-Depois, `scons deploy` cria um preview e `scons deploy --prod` solicita um deploy de produção. O segundo comando publica no domínio de produção configurado no projeto Vercel. `prod` é uma opção, não um target SCons; use `--prod`, não `scons deploy prod`. Verifique o URL e os logs de build retornados pelo CLI após cada deploy.
+Antes de cada deploy, o SCons confirma a sessão com `vercel whoami` e verifica se o `projectId` em `.vercel/project.json` corresponde ao projeto `brunosrz` no escopo autenticado. Depois, `scons deploy` cria um preview e `scons deploy --prod` solicita um deploy de produção. O segundo comando publica no domínio de produção configurado no projeto Vercel. `prod` é uma opção, não um target SCons; use `--prod`, não `scons deploy prod`. Verifique o URL e os logs de build retornados pelo CLI após cada deploy. `bun run deploy` também passa pelo SCons e executa os mesmos preflights.
 
 ## SEO e compartilhamento
 
