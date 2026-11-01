@@ -1,12 +1,13 @@
 # Dependências
 node_modules/
-.pnpm-store/
 
 # Saída de build
 .output/
 dist/
 build/
 coverage/
+playwright-report/
+test-results/
 
 # Ambiente local e credenciais
 .env
@@ -18,3 +19,10 @@ coverage/
 .DS_Store
 Thumbs.db
 .vscode/
+.vite/
+.tanstack/
+.ruff_cache/
+__pycache__/
+/src/routeTree.gen.ts
+/src/paraglide/
+/.tanstack-scaffold-seed

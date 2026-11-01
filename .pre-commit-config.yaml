@@ -19,13 +19,43 @@ repos:
     hooks:
       - id: prettier
         name: Prettier
-        entry: pnpm exec prettier --write
+        entry: bun run prettier --write
         language: system
         files: \.(ts|tsx|js|jsx|mjs|cjs|json|md|yaml|yml|css|html)$
         types_or: [text]
+      - id: compileall
+        name: Python syntax (compileall)
+        entry: python -m compileall -q
+        language: system
+        types: [python]
+      - id: translation-key-order
+        name: Translation key ordering
+        entry: python utils/sort_translation_keys.py --check
+        language: system
+        files: ^messages/.*\.json$
+      - id: oxlint
+        name: JavaScript and TypeScript lint (oxlint)
+        entry: bun run oxlint
+        language: system
+        files: \.(ts|tsx|js|jsx|mjs|cjs)$
+        pass_filenames: false
+      - id: typecheck
+        name: TypeScript typecheck
+        entry: bun run typecheck
+        language: system
+        files: \.(ts|tsx)$
+        pass_filenames: false
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.20
+    hooks:
+      - id: ruff
+        args: [--fix, --select, I]
+      - id: ruff-format
+        types: [python]
 
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.7
+    rev: v1.7.12
     hooks:
       - id: actionlint
         files: ^\.github/workflows/.*\.ya?ml$
