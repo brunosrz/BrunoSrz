@@ -18,7 +18,7 @@
     "typecheck": "node scripts/warm-paraglide-wasm.mjs && bun run i18n:compile && bun run generate-routes && tsc --noEmit",
     "lint": "oxlint && prettier --check .",
     "format": "prettier --write .",
-    "test": "vitest run --passWithNoTests",
+    "test": "node scripts/warm-paraglide-wasm.mjs && bun run i18n:compile && bun run generate-routes && vitest run --passWithNoTests",
     "test:watch": "vitest",
     "test:coverage": "node scripts/warm-paraglide-wasm.mjs && bun run i18n:compile && bun run generate-routes && vitest run --coverage --passWithNoTests",
     "test:e2e": "node scripts/warm-paraglide-wasm.mjs && playwright test --pass-with-no-tests"

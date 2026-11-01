@@ -1,47 +1,42 @@
 # Portfólio de brunosrz
 
-Portfólio pessoal de **brunosrz**, engenheiro de software autodidata com atuação em IA aplicada e produtos full stack. O site apresentará experiência e evidências de trabalho em engenharia de software. O plano de entrega está organizado na [issue guarda-chuva #1](https://github.com/brunosrz/brunosrz/issues/1).
+Site pessoal de Bruno Soares, engenheiro de software autodidata com atuação em IA aplicada e produtos full stack. O portfólio reúne projetos, experiência prática e formas de contato; apresenta a trajetória de uma pessoa desenvolvedora, não de uma empresa.
 
-## Projetos e stack
+## Projetos
 
-O portfólio apresentará Vectora, Ability System e Delivery Express com descrições baseadas no trabalho e no estágio real de cada projeto. [Vectora](https://vectora.chat/features) é uma plataforma de engenharia de software com agentes de IA, contexto de código, ferramentas de desenvolvimento e infraestrutura própria. A página de funcionalidades documenta, entre outros recursos, o motor de conversa nativo, subagentes e kanban multiagente, Context Graph, RAG híbrido, terminal e Git integrados, navegador compartilhado e sandbox multiplataforma. Ability System e Delivery Express terão subdomínios próprios em etapas futuras; esses sites ainda serão desenvolvidos. Este repositório é a presença profissional pessoal de brunosrz, não um site de empresa.
+O portfólio destaca três projetos em seus estágios reais de desenvolvimento:
 
-A aplicação é baseada em TanStack Start e Vite, com Tailwind CSS, Paraglide e Motion. O scaffold gerado pelo TanStack permanece como exemplo inicial; a identidade visual e o conteúdo próprios do portfólio serão implementados em uma etapa separada.
+- [Vectora](https://vectora.chat/features): plataforma de engenharia de software com IA, agentes especializados, contexto de código e ferramentas integradas. Consulte a página de funcionalidades para detalhes e maturidade de cada capacidade.
+- [Ability System](https://github.com/brunosrz/AbilitySystem): framework open source em C++/GDExtension para Godot 4.x, em preparação para distribuição pública.
+- [Delivery Express](https://github.com/brunosrz/Delivery): produto B2B em desenvolvimento para cardápios, pedidos e operação de restaurantes. O site próprio em subdomínio faz parte de uma etapa futura.
+
+Os futuros sites de Ability System e Delivery Express serão publicados em subdomínios próprios quando estiverem prontos. Este repositório contém o portfólio pessoal.
+
+## Stack
+
+A aplicação usa TanStack Start, Vite, Tailwind CSS, Paraglide para português e inglês, Motion para animações e Bun para dependências e scripts. O layout é mobile first e também se adapta a tablets e desktops.
+
+Os endereços dos futuros sites dedicados são opcionais e configurados por `VITE_ABILITY_SYSTEM_SITE_URL` e `VITE_DELIVERY_EXPRESS_SITE_URL`. Enquanto os subdomínios não estiverem publicados, os cartões mostram que esses sites estão planejados. Use `.env.example` como referência e não versione arquivos `.env`.
 
 ## Requisitos
 
-- Node.js 24 ou compatível com a versão definida pela aplicação.
-- Bun 1.4.4, na versão fixada pelo campo `packageManager` do `package.json`.
-- Python 3.13 ou superior e SCons para executar os comandos de build e manutenção.
+Use Bun 1.4.4, Node.js 24 ou compatível com o campo `engines`, Python e SCons.
 
-Instale as dependências JavaScript na raiz:
+Instale as dependências na raiz:
 
 ```sh
 bun install
 ```
 
-## Aplicação scaffold
+## Desenvolvimento e qualidade
 
-Use estes comandos para executar o scaffold e as ferramentas instaladas:
+Inicie o servidor local:
 
 ```sh
 bun run dev
-bun run build
-bun run typecheck
-bun run lint
-bun run format
-bun run test
-bun run test:watch
-bun run test:e2e
 ```
 
-Paraglide está configurado para inglês (`en`) e português brasileiro (`pt-BR`), com rotas localizadas e suporte a SSR. As mensagens-fonte ficam em `messages/`; os módulos gerados em `src/paraglide/` não devem ser editados.
-
-Vitest, Testing Library e jsdom ficam disponíveis para testes unitários e de componentes. Para cada comportamento novo, cubra caminho feliz, entradas ou estados inválidos e regressões. Playwright está configurado para navegadores desktop e mobile; os testes do próprio portfólio serão adicionados junto com a interface.
-
-## Desenvolvimento e qualidade
-
-Os comandos SCons centralizam tarefas comuns:
+Os comandos SCons centralizam as tarefas do projeto:
 
 ```sh
 scons lint
@@ -53,23 +48,21 @@ scons update
 scons update --latest
 ```
 
-`update` respeita os intervalos declarados no `package.json`; `update --latest` pode atualizar versões principais. Revise changelogs e alterações incompatíveis antes de integrar esse resultado. O alvo `deploy` será ligado ao provedor de hospedagem numa etapa posterior.
+`update` respeita os intervalos de versão do `package.json`; `update --latest` também pode atualizar versões principais. Revise changelogs e incompatibilidades antes de integrar essas atualizações. Deploy só ficará disponível quando a configuração da plataforma de hospedagem for definida.
 
-Os hooks locais validam whitespace, fim de arquivo, YAML/JSON, conflitos, tamanho e chaves privadas. Também ordenam as mensagens i18n, formatam com Prettier, analisam JS/TS com Oxlint, verificam tipos, compilam os utilitários Python e validam workflows do GitHub Actions.
-
-Instale os hooks locais antes de contribuir e rode os checks:
+Instale os hooks locais e execute as verificações antes de abrir um pull request:
 
 ```sh
 pre-commit install
 pre-commit run --all-files
 ```
 
-Os pull requests rodam hooks, lint e testes em Linux e Windows. A CI não dispara deploy automaticamente.
+A CI executa os hooks, lint, tipagem, testes e build em Linux e Windows. Ela não publica o site automaticamente.
 
-## Fluxo de contribuição
+## Contribuição
 
-Cada etapa da issue #1 tem uma issue e um pull request próprios. Use branches `feat/`, `fix/` ou `chore/` e títulos Conventional Commits. Os PRs incluem evidência dos checks executados e são revisados pelo CodeRabbit AI. PRs posteriores ao primeiro aguardam aprovação antes de começar.
+Cada etapa da [issue guarda-chuva #1](https://github.com/brunosrz/brunosrz/issues/1) tem sua própria issue e seu pull request. Use branches `feat/`, `fix/` ou `chore/`, mensagens Conventional Commits e inclua evidências dos checks executados. Os pull requests passam por revisão do CodeRabbit AI.
 
 ## Segurança
 
-Nunca versione credenciais. Arquivos `.env` são ignorados pelo Git; use apenas exemplos sem valores reais quando uma configuração local for necessária. Consulte [SECURITY.md](SECURITY.md) para reportar vulnerabilidades.
+Nunca versione credenciais. Arquivos `.env` são ignorados pelo Git; use exemplos sem valores reais quando uma configuração local for necessária. Consulte [SECURITY.md](SECURITY.md) para reportar vulnerabilidades.
