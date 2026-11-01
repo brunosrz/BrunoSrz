@@ -23,6 +23,5 @@ Thumbs.db
 .tanstack/
 .ruff_cache/
 __pycache__/
-/src/routeTree.gen.ts
-/src/paraglide/
-/.tanstack-scaffold-seed
+paraglide
+*.gen.ts
