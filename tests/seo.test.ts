@@ -1,0 +1,74 @@
+import { readFile } from "node:fs/promises";
+import { describe, expect, it } from "vitest";
+
+const rootRoute = await readFile("src/routes/__root.tsx", "utf8");
+const faviconSvg = await readFile("public/favicon.svg", "utf8");
+const robots = await readFile("public/robots.txt", "utf8");
+const sitemap = await readFile("public/sitemap.xml", "utf8");
+const manifest = JSON.parse(
+  await readFile("public/site.webmanifest", "utf8"),
+) as {
+  icons: Array<{ sizes: string; src: string }>;
+};
+
+function readPngDimensions(png: Buffer): { width: number; height: number } {
+  return {
+    width: png.readUInt32BE(16),
+    height: png.readUInt32BE(20),
+  };
+}
+
+describe("portfolio SEO assets", () => {
+  it("serves localized search and social metadata from the root route", () => {
+    expect(rootRoute).toContain("m.meta_title()");
+    expect(rootRoute).toContain("m.meta_description()");
+    expect(rootRoute).toContain('"/pt-BR/" : "/en/"');
+    expect(rootRoute).toContain('hrefLang: "pt-BR"');
+    expect(rootRoute).toContain('hrefLang: "x-default"');
+    expect(rootRoute).toContain("og:image");
+    expect(rootRoute).toContain("twitter:card");
+    expect(rootRoute).toContain('href: "/favicon.svg"');
+    expect(rootRoute).toContain('"@type": "ProfilePage"');
+    expect(rootRoute).toContain('"@type": "Person"');
+  });
+
+  it("publishes a crawlable sitemap and robots policy for both locales", () => {
+    expect(robots).toContain("Allow: /");
+    expect(robots).toContain("https://brunosrz.vercel.app/sitemap.xml");
+    expect(sitemap).toContain("https://brunosrz.vercel.app/en/");
+    expect(sitemap).toContain("https://brunosrz.vercel.app/pt-BR/");
+    expect(sitemap).toContain('hreflang="x-default"');
+  });
+
+  it("ships square favicon variants and correctly sized social cards", async () => {
+    expect(faviconSvg).toContain('viewBox="0 0 64 64"');
+    for (const [file, size] of [
+      ["public/favicon-16x16.png", 16],
+      ["public/favicon-32x32.png", 32],
+      ["public/favicon-48x48.png", 48],
+      ["public/apple-touch-icon.png", 180],
+      ["public/android-chrome-192x192.png", 192],
+      ["public/android-chrome-512x512.png", 512],
+    ] as const) {
+      const dimensions = readPngDimensions(await readFile(file));
+      expect(dimensions).toEqual({ width: size, height: size });
+    }
+
+    expect(manifest.icons.map((icon) => icon.sizes)).toEqual([
+      "192x192",
+      "512x512",
+    ]);
+    expect(
+      readPngDimensions(await readFile("public/social-card-en.png")),
+    ).toEqual({
+      width: 1200,
+      height: 630,
+    });
+    expect(
+      readPngDimensions(await readFile("public/social-card-pt-BR.png")),
+    ).toEqual({ width: 1200, height: 630 });
+    expect((await readFile("public/favicon.ico")).subarray(0, 4)).toEqual(
+      Buffer.from([0, 0, 1, 0]),
+    );
+  });
+});

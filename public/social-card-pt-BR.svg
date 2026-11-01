@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111113" />
+      <stop offset="1" stop-color="#171d27" />
+    </linearGradient>
+    <radialGradient id="glow" cx=".82" cy=".18" r=".6">
+      <stop offset="0" stop-color="#1476c8" stop-opacity=".3" />
+      <stop offset="1" stop-color="#1476c8" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+  <rect x="82" y="82" width="74" height="74" rx="19" fill="#111113" stroke="#174b7e" stroke-width="2" />
+  <path d="M104 96h6v20c2.5-3 6-4.7 10.3-4.7 8.3 0 13.7 6.4 13.7 14.7s-5.5 14.7-13.8 14.7c-4.3 0-7.8-1.8-10.2-5l-.3 4.3h-5.7V96Zm14.7 37.5c5.5 0 9-3.9 9-9.3s-3.5-9.3-9-9.3-9.2 3.9-9.2 9.3 3.5 9.3 9.2 9.3Z" fill="#70bdff" />
+  <circle cx="143" cy="136" r="3" fill="#70bdff" />
+  <text x="82" y="320" fill="#f7f8fa" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="700">Bruno Soares</text>
+  <text x="86" y="385" fill="#70bdff" font-family="Arial, Helvetica, sans-serif" font-size="28" letter-spacing="3">BRUNOSRZ</text>
+  <text x="86" y="455" fill="#c5cbd4" font-family="Arial, Helvetica, sans-serif" font-size="32">Engenharia de software · IA aplicada · Produtos</text>
+  <rect x="86" y="510" width="104" height="4" rx="2" fill="#3399ff" />
+  <text x="86" y="560" fill="#8e98a7" font-family="Arial, Helvetica, sans-serif" font-size="23">brunosrz.vercel.app</text>
+</svg>

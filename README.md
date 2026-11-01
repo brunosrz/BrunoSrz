@@ -60,6 +60,12 @@ bunx vercel@65.9.0 link
 
 Depois, `scons deploy` cria um preview e `scons deploy --prod` solicita um deploy de produção. O segundo comando publica no domínio de produção configurado no projeto Vercel. `prod` é uma opção, não um target SCons; use `--prod`, não `scons deploy prod`. Verifique o URL e os logs de build retornados pelo CLI após cada deploy.
 
+## SEO e compartilhamento
+
+O site publica metadados localizados em inglês e português, URLs canônicas e alternates `hreflang`, dados estruturados de perfil pessoal, sitemap, `robots.txt` e cartões Open Graph/X. O domínio canônico é `https://brunosrz.vercel.app`; se ele mudar, atualize as referências em `src/routes/__root.tsx`, `public/robots.txt` e `public/sitemap.xml`. Os previews continuam apontando para o domínio canônico. Os arquivos de marca incluem SVG, ICO, PNGs em vários tamanhos e imagens sociais localizadas de 1200 × 630.
+
+Depois de publicar, verifique o HTML renderizado e os endpoints `/robots.txt`, `/sitemap.xml` e imagens sociais. Search Console, o teste de resultados avançados do Google e os depuradores de compartilhamento ajudam a validar rastreamento, dados estruturados e cards. A implementação não garante indexação nem atualização imediata dos caches das plataformas.
+
 Instale os hooks locais e execute as verificações antes de abrir um pull request:
 
 ```sh
