@@ -66,12 +66,19 @@ async def _run_vercel(arguments: list[str]) -> int:
 
 def _check_vercel_auth() -> int:
     """Fail before deploy when the Vercel CLI on PATH has no active login."""
-    result = subprocess.run(
-        [VERCEL, "whoami"],
-        cwd=ROOT,
-        stdin=subprocess.DEVNULL,
-        check=False,
-    )
+    try:
+        result = subprocess.run(
+            [VERCEL, "whoami"],
+            cwd=ROOT,
+            stdin=subprocess.DEVNULL,
+            check=False,
+        )
+    except OSError:
+        print(
+            "\n[scons deploy] Não encontrei o Vercel CLI no PATH.\n"
+            "  Instale-o globalmente e confirme com `vercel --version`.\n"
+        )
+        return 127
     if result.returncode != 0:
         print(
             "\n[scons deploy] O CLI Vercel encontrado no PATH não está autenticado.\n"
@@ -93,7 +100,12 @@ def _check_vercel_link() -> bool:
 
     try:
         with open(link_path, encoding="utf-8") as link_file:
-            linked_project = json.load(link_file).get("projectName", "")
+            project_config = json.load(link_file)
+            linked_project = (
+                project_config.get("projectName", "")
+                if isinstance(project_config, dict)
+                else ""
+            )
     except (OSError, json.JSONDecodeError):
         linked_project = ""
 
